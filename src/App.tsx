@@ -6,9 +6,9 @@ import { GiFishBucket } from 'react-icons/gi';
 
 function App() {
   const [bucketListItem, setBucketListItem] = useState(null);
-  const [myList, setMyList] = useState(['Buck it'])
+  const [myList, setMyList] = useState(['Buck it']);
 
-  const testListItem = 'Eat Croissants in Paris';
+  const testListItem = 'Do Coke in Bogota';
   const fetchNewItem = async () => {
     try {
       const response = await fetch('https://api.api-ninjas.com/v1/bucketlist', {
@@ -33,11 +33,12 @@ function App() {
   // }, []);
 
   const addListItem = () => {
-    setMyList(
-      [...myList, 
+    setMyList([
+      ...myList,
       // bucketListItem]
-      testListItem]
-    )}
+      testListItem,
+    ]);
+  };
 
   return (
     <>
@@ -54,12 +55,11 @@ function App() {
             {bucketListItem} {testListItem}
           </h3>
           <div className="flex flex-row justify-evenly">
-          
-            <button 
+            <button
               className="bg-slate-200 min-w-min px-12 py-2 rounded-full"
               onClick={addListItem}
-              >
-                Save
+            >
+              Save
             </button>
             <button
               className="bg-slate-200 min-w-min px-12 py-2 rounded-full"
@@ -69,10 +69,14 @@ function App() {
             </button>
           </div>
         </div>
-        <h2 className='my-5 text-2xl font-semibold text-emerald-500'>Your Buck'it:</h2>
+        <h2 className="my-5 text-2xl font-semibold text-emerald-500">
+          Your Buck'it:
+        </h2>
         <ul>
-          {myList.map(myListItem => <li>{myListItem}</li>)}
-          </ul>
+          {myList.map((myListItem) => (
+            <li className="text-xl">{myListItem}</li>
+          ))}
+        </ul>
       </div>
     </>
   );
