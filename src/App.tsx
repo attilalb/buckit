@@ -3,17 +3,24 @@ import './App.css';
 import XButton from './components/XButton';
 import HeartButton from './components/HeartButton';
 import { GiFishBucket, GiTrashCan } from 'react-icons/gi';
+import MyBuckit from './components/MyBuckit';
 
-interface IMyList {
+export interface IMyList {
   id: number;
   item: string;
 }
 
 function App() {
   const [bucketListItem, setBucketListItem] = useState('');
-  const [myList, setMyList] = useState<IMyList[]>([]);
+  const [myList, setMyList] = useState<IMyList[]>(() => {
+    const savedBuckit = localStorage.getItem('myBuckit')
+      //if there is a saved buckit
+      if (savedBuckit) {
+        return JSON.parse(savedBuckit);
+      }
+  });
 
-  const testListItem = 'Drink a Gin in London.';
+  const testListItem = 'Take over the world.';
   const fetchNewItem = async () => {
     try {
       const response = await fetch('https://api.api-ninjas.com/v1/bucketlist', {
@@ -36,6 +43,10 @@ function App() {
   // useEffect(() => {
   //   fetchNewItem();
   // }, []);
+
+  useEffect(() => {
+    localStorage.setItem("myBuckit", JSON.stringify(myList)); 
+  }, [myList])
 
   const addListItem = () => {
     setMyList([
@@ -84,23 +95,7 @@ function App() {
         <h2 className="my-5 text-2xl font-semibold text-emerald-500">
           Your Buck'it:
         </h2>
-        <div className="container max-w-sm mx-auto">
-          <ul className="flex flex-col gap-2">
-            {myList.map((myListItem) => (
-              <div className="flex bg-slate-100 font-semibold text-emerald-500 justify-between rounded-lg px-4 py-3 hover:scale-101 drop-shadow-xs hover:drop-shadow-xl duration-300">
-                <li key={myListItem.id} className="text-xl font bold">
-                  {myListItem.item}
-                </li>
-                <button
-                  onClick={() => deleteListItem(myListItem.id)}
-                  className="text-2xl cursor-pointer text-slate-100 opacity-60 hover:text-emerald-400 duration-300 ease-in-out"
-                >
-                  <GiTrashCan />
-                </button>
-              </div>
-            ))}
-          </ul>
-        </div>
+       <MyBuckit myList={myList} onDeleteClick={deleteListItem}/>
       </div>
     </>
   );
