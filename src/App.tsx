@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import TrashButton from './components/TrashButton'
+import TrashButton from './components/TrashButton';
 import HeartButton from './components/HeartButton';
 import { GiFishBucket, GiTrashCan } from 'react-icons/gi';
 import MyBuckit from './components/MyBuckit';
-import Loader from './components/Loader'
+import Loader from './components/Loader';
 
 export interface IMyList {
   id: number;
@@ -12,20 +12,20 @@ export interface IMyList {
 }
 
 function App() {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [bucketListItem, setBucketListItem] = useState('');
   const [myList, setMyList] = useState<IMyList[]>(() => {
-    const savedBuckit = localStorage.getItem('myBuckit')
-      //if there is a saved buckit
-      if (savedBuckit) {
-        return JSON.parse(savedBuckit);
-      }
+    const savedBuckit = localStorage.getItem('myBuckit');
+    //if there is a saved buckit
+    if (savedBuckit) {
+      return JSON.parse(savedBuckit);
+    }
   });
 
   const testListItem = 'Take over the world.';
   const fetchNewItem = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await fetch('https://api.api-ninjas.com/v1/bucketlist', {
         method: 'GET',
         headers: {
@@ -33,10 +33,10 @@ function App() {
         },
       });
       if (!response.ok) {
-        setIsLoading(false)
+        setIsLoading(false);
         throw new Error('Network response was not ok');
       }
-      setIsLoading(false)
+      setIsLoading(false);
       const data = await response.json();
       setBucketListItem(data.item);
     } catch (error) {
@@ -49,15 +49,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("myBuckit", JSON.stringify(myList)); 
-  }, [myList])
+    localStorage.setItem('myBuckit', JSON.stringify(myList));
+  }, [myList]);
 
   const addListItem = () => {
-    setMyList([
-      ...myList,
-     
-      { id: myList.length + 1, item: bucketListItem },
-    ]);
+    setMyList([...myList, { id: myList.length + 1, item: bucketListItem }]);
   };
 
   const deleteListItem = (id: number) => {
@@ -78,29 +74,17 @@ function App() {
           <h2 id="cardHeader" className="text-xl">
             Your next adventure:{' '}
           </h2>
-          {isLoading 
-            
-            ? <Loader />
-            
-            : <h3>
-                {bucketListItem} 
-              </h3> 
-            }
+          {isLoading ? <Loader /> : <h3>{bucketListItem}</h3>}
 
           <div className="flex flex-row justify-evenly">
-            <button
-              className="bg-slate-200 min-w-min px-12 py-2 rounded-full"
-              onClick={addListItem}
-            >
-              Save
-            </button>
-            <TrashButton onTrashClick={fetchNewItem}/>  
+            <TrashButton onTrashClick={fetchNewItem} />
+            <HeartButton onHeartClick={addListItem} />
           </div>
         </div>
         <h2 className="my-5 text-2xl font-semibold text-emerald-500">
           Your Buck'it:
         </h2>
-       <MyBuckit myList={myList} onDeleteClick={deleteListItem}/>
+        <MyBuckit myList={myList} onDeleteClick={deleteListItem} />
       </div>
     </>
   );
