@@ -16,7 +16,7 @@ The **Buck'it App** is an awesome bucket list application built with React that 
 
 - **React Hooks**: Use state and effect hooks to manage component state and lifecycle events. It's the modern and efficient way to handle complex logic in your components! ⚛️⚙️
 
-- **CSS**: Custom styling using Tailwind CSS to create a visually appealing and responsive user interface. 💅🎨
+- **TailwindCSS**: Custom styling using Tailwind CSS to create a visually appealing and responsive user interface. 💅🎨
 
 - **React Icons**: A collection of customizable icons for React applications, making it easy to add visual elements to your project. 🚀🎉
 
