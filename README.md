@@ -29,26 +29,23 @@ Follow these simple steps to get started with the Buck'it App:
 1. **Clone the Repository**: Begin by cloning this repository to your local machine using the following command:
 
    ```bash
-   git clone https://github.com/your-username/buckit-app.git
-  ```
+   git clone https://github.com/attilalb/buckit.git
+   
 2. **Navigate to the Project Directory**: Move into the project directory using the following command:
 
    ```bash
    cd buckit-app
-   ```
-
+   
 3. **Install Dependencies**: Install the necessary dependencies by running the following command:
 
    ```bash
    npm install
-  ```
-
+  
 4. **Start the Development Server**: Launch the development server with the following command:
 
    ```bash
-   npm start
-  ```
-  
+   npm start 
+ 
 5. **Open the App**: Open your favorite web browser and visit `http://localhost:3000` to see the Buck'it App in action!
 
 ## 🎉 Contribution
