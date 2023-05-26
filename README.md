@@ -1,3 +1,3 @@
-# buckit
+# Buck'it
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/vitejs-vite-wggkuf)
+Bucket-list generator. 

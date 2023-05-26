@@ -2,13 +2,18 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import XButton from './components/XButton';
 import HeartButton from './components/HeartButton';
-import { GiFishBucket } from 'react-icons/gi';
+import { GiFishBucket, GiTrashCan } from 'react-icons/gi';
+
+interface IMyList {
+  id: number;
+  item: string;
+}
 
 function App() {
-  const [bucketListItem, setBucketListItem] = useState(null);
-  const [myList, setMyList] = useState(['Buck it']);
+  const [bucketListItem, setBucketListItem] = useState('');
+  const [myList, setMyList] = useState<IMyList[]>([]);
 
-  const testListItem = 'Do Coke in Bogota';
+  const testListItem = 'Drink a Gin in London.';
   const fetchNewItem = async () => {
     try {
       const response = await fetch('https://api.api-ninjas.com/v1/bucketlist', {
@@ -36,8 +41,15 @@ function App() {
     setMyList([
       ...myList,
       // bucketListItem]
-      testListItem,
+      { id: myList.length + 1, item: testListItem },
     ]);
+  };
+
+  const deleteListItem = (id: number) => {
+    const updatedList = myList.filter((listItem) => {
+      return listItem.id !== id;
+    });
+    setMyList(updatedList);
   };
 
   return (
@@ -72,11 +84,23 @@ function App() {
         <h2 className="my-5 text-2xl font-semibold text-emerald-500">
           Your Buck'it:
         </h2>
-        <ul>
-          {myList.map((myListItem) => (
-            <li className="text-xl">{myListItem}</li>
-          ))}
-        </ul>
+        <div className="container max-w-sm mx-auto">
+          <ul className="flex flex-col gap-2">
+            {myList.map((myListItem) => (
+              <div className="flex bg-slate-100 font-semibold text-emerald-500 justify-between rounded-lg px-4 py-3 hover:scale-101 drop-shadow-xs hover:drop-shadow-xl duration-300">
+                <li key={myListItem.id} className="text-xl font bold">
+                  {myListItem.item}
+                </li>
+                <button
+                  onClick={() => deleteListItem(myListItem.id)}
+                  className="text-2xl cursor-pointer text-slate-100 opacity-60 hover:text-emerald-400 duration-300 ease-in-out"
+                >
+                  <GiTrashCan />
+                </button>
+              </div>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   );
