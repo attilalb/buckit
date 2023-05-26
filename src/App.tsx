@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import XButton from './components/XButton';
+import TrashButton from './components/TrashButton'
 import HeartButton from './components/HeartButton';
 import { GiFishBucket, GiTrashCan } from 'react-icons/gi';
 import MyBuckit from './components/MyBuckit';
+import Loader from './components/Loader'
 
 export interface IMyList {
   id: number;
@@ -11,6 +12,7 @@ export interface IMyList {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [bucketListItem, setBucketListItem] = useState('');
   const [myList, setMyList] = useState<IMyList[]>(() => {
     const savedBuckit = localStorage.getItem('myBuckit')
@@ -23,26 +25,28 @@ function App() {
   const testListItem = 'Take over the world.';
   const fetchNewItem = async () => {
     try {
+      setIsLoading(true)
       const response = await fetch('https://api.api-ninjas.com/v1/bucketlist', {
         method: 'GET',
         headers: {
-          // 'X-Api-Key': 'imQk21qaV4TZhGn0ySbwNGof2tonLjtF5tRk0wYs',
+          'X-Api-Key': 'imQk21qaV4TZhGn0ySbwNGof2tonLjtF5tRk0wYs',
         },
       });
       if (!response.ok) {
+        setIsLoading(false)
         throw new Error('Network response was not ok');
       }
+      setIsLoading(false)
       const data = await response.json();
-      console.log(data);
       setBucketListItem(data.item);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  // useEffect(() => {
-  //   fetchNewItem();
-  // }, []);
+  useEffect(() => {
+    fetchNewItem();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("myBuckit", JSON.stringify(myList)); 
@@ -51,8 +55,8 @@ function App() {
   const addListItem = () => {
     setMyList([
       ...myList,
-      // bucketListItem]
-      { id: myList.length + 1, item: testListItem },
+     
+      { id: myList.length + 1, item: bucketListItem },
     ]);
   };
 
@@ -74,9 +78,15 @@ function App() {
           <h2 id="cardHeader" className="text-xl">
             Your next adventure:{' '}
           </h2>
-          <h3>
-            {bucketListItem} {testListItem}
-          </h3>
+          {isLoading 
+            
+            ? <Loader />
+            
+            : <h3>
+                {bucketListItem} 
+              </h3> 
+            }
+
           <div className="flex flex-row justify-evenly">
             <button
               className="bg-slate-200 min-w-min px-12 py-2 rounded-full"
@@ -84,12 +94,7 @@ function App() {
             >
               Save
             </button>
-            <button
-              className="bg-slate-200 min-w-min px-12 py-2 rounded-full"
-              onClick={fetchNewItem}
-            >
-              New{' '}
-            </button>
+            <TrashButton onTrashClick={fetchNewItem}/>  
           </div>
         </div>
         <h2 className="my-5 text-2xl font-semibold text-emerald-500">
