@@ -54,6 +54,7 @@ function App() {
 
   const addListItem = () => {
     setMyList([...myList, { id: myList.length + 1, item: bucketListItem }]);
+    fetchNewItem();
   };
 
   const deleteListItem = (id: number) => {
