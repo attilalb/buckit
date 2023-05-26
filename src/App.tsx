@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import TrashButton from './components/TrashButton';
 import HeartButton from './components/HeartButton';
-import { GiFishBucket, GiTrashCan } from 'react-icons/gi';
+import { GiFishBucket } from 'react-icons/gi';
 import MyBuckit from './components/MyBuckit';
 import Loader from './components/Loader';
 
@@ -22,7 +22,6 @@ function App() {
     }
   });
 
-  const testListItem = 'Take over the world.';
   const fetchNewItem = async () => {
     try {
       setIsLoading(true);
